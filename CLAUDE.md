@@ -1,0 +1,51 @@
+# CLAUDE.md
+
+## Plugin overview
+
+`session-tracker` is a Claude Code plugin for tracking work sessions in Toggl Track or Clockify.
+
+## Structure
+
+```
+session-tracker/
+├── .claude-plugin/
+│   └── plugin.json        ← plugin manifest
+├── skills/
+│   ├── setup-tracker/
+│   │   └── SKILL.md       ← /setup-tracker skill
+│   ├── start-session/
+│   │   └── SKILL.md       ← /start-session skill
+│   └── stop-session/
+│       └── SKILL.md       ← /stop-session skill
+├── README.md
+└── CLAUDE.md
+```
+
+## Config file
+
+Skills read/write `~/.claude/plugins/session-tracker/config.json`:
+
+```json
+{
+  "backend": "toggl",
+  "toggl": {
+    "api_key": "...",
+    "workspace_id": 1234567,
+    "default_project_id": null
+  }
+}
+```
+
+## Skills
+
+| Skill | Trigger | Description |
+|-------|---------|-------------|
+| `/setup-tracker` | First run / reconfigure | Interactive setup, writes config |
+| `/start-session [desc]` | Begin tracking | Starts timer via API |
+| `/stop-session` | End tracking | Stops running timer, reports duration |
+
+## Adding a new backend
+
+1. Add a section to `config.json` (e.g. `"harvest": { ... }`)
+2. Add `backend: "harvest"` handling to each skill
+3. Bump version in `plugin.json`
