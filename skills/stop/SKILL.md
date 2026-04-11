@@ -1,7 +1,7 @@
 ---
-name: stop-session
-description: Stop the current time tracking session or timer. Use when the user says "/stop-session", "stop session", "stop timer", "end session", "I'm done", "finished working", or any similar phrase indicating they want to stop tracking time.
-version: 1.0.0
+name: stop
+description: Stop the current time tracking session or timer. Use when the user says "/stop", "stop session", "stop timer", "end session", "I'm done", "finished working", or any similar phrase indicating they want to stop tracking time.
+version: 1.1.0
 ---
 
 # Stop Session

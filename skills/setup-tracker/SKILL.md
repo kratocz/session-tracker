@@ -1,7 +1,7 @@
 ---
 name: setup-tracker
 description: Configure the session-tracker plugin. Use when the user wants to set up time tracking, configure Toggl or Clockify, run initial setup, says "/setup-tracker", or when start-session fails because config is missing.
-version: 1.0.0
+version: 1.1.0
 ---
 
 # Setup Tracker
@@ -76,4 +76,4 @@ Configure session-tracker to connect to a time tracking service.
    }
    ```
 
-7. Confirm: "Setup complete. Use /start-session to begin tracking."
+7. Confirm: "Setup complete. Use /start to begin tracking."

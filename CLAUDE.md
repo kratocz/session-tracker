@@ -13,10 +13,10 @@ session-tracker/
 ├── skills/
 │   ├── setup-tracker/
 │   │   └── SKILL.md       ← /setup-tracker skill
-│   ├── start-session/
-│   │   └── SKILL.md       ← /start-session skill
-│   └── stop-session/
-│       └── SKILL.md       ← /stop-session skill
+│   ├── start/
+│   │   └── SKILL.md       ← /start skill
+│   └── stop/
+│       └── SKILL.md       ← /stop skill
 ├── README.md
 └── CLAUDE.md
 ```
@@ -41,8 +41,8 @@ Skills read/write `~/.claude/plugins/session-tracker/config.json`:
 | Skill | Trigger | Description |
 |-------|---------|-------------|
 | `/setup-tracker` | First run / reconfigure | Interactive setup, writes config |
-| `/start-session [desc]` | Begin tracking | Starts timer via API |
-| `/stop-session` | End tracking | Stops running timer, reports duration |
+| `/start [desc]` | Begin tracking | Starts timer via API |
+| `/stop` | End tracking | Stops running timer, reports duration |
 
 ## Adding a new backend
 

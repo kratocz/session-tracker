@@ -19,8 +19,8 @@ Run once to configure your time tracking backend:
 ## Usage
 
 ```
-/start-session Refactoring auth module
-/stop-session
+/start Refactoring auth module
+/stop
 ```
 
 ## Supported backends
