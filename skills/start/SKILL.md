@@ -2,8 +2,8 @@
 name: start
 description: Start a time tracking session or timer. Use when the user says "/start", "start session", "start timer", "begin tracking", "I'm starting work on...", or any similar phrase indicating they want to begin tracking time.
 argument-hint: [task-description-or-url]
-version: 1.3.0
-allowed-tools: Read, Bash
+version: 1.4.0
+allowed-tools: Read, Bash, WebFetch
 ---
 
 # Start Session
@@ -14,6 +14,7 @@ Start a new time tracking session in the configured backend.
 
 1. **Read config**: Read `~/.claude/plugins/session-tracker/config.json` using the Read tool.
    - If the file doesn't exist: "No configuration found. Please run /setup-tracker first." Then stop.
+   - Read `config.language` (default `"en"` if missing). All user-facing text generated in the steps below — prompts, confirmations, URL-derived descriptions — should be phrased in this language. Keep proper nouns, code identifiers, URLs, and numeric durations unchanged.
 
 2. **Gather project context** (best-effort — ignore errors if not in a git repo):
    ```bash
@@ -37,11 +38,15 @@ Start a new time tracking session in the configured backend.
      "https://api.clockify.me/api/v1/workspaces/<workspace_id>/time-entries?in-progress=true&page-size=1"
    ```
 
-   If a timer is already running, show its description and ask the user whether to stop it first (via `/stop`) or keep it running. Do not auto-stop.
+   If a timer is already running, show its description and ask the user (in the configured language) whether to stop it first (via `/stop`) or keep it running. Do not auto-stop.
 
 4. **Determine description**:
-   - If arguments were provided, use them as-is. Accepts plain text or a URL — pass through unchanged.
-   - Otherwise, ask the user for a brief description of what they're working on.
+   - If arguments were provided, trim them. If the trimmed argument starts with `http://` or `https://`, treat as a URL:
+     - Use `WebFetch` with a prompt like "Return only the primary title of this page (e.g., pull/merge request title, issue title, or `<title>` tag). No commentary."
+     - Compose the description as `<title> — <URL>`. If the configured language differs from the title's apparent language, translate/rephrase the title naturally (keep proper nouns, code identifiers, branch names, IDs intact).
+     - If `WebFetch` fails or returns nothing usable, fall back to the URL as the full description.
+   - If the argument is plain text, use it as-is (the user already chose the wording).
+   - If no arguments were provided, ask the user — in the configured language — for a brief description of what they're working on.
 
 5. **Resolve tracker project** (optional):
    - Fetch the active project list and look for a project whose name matches the detected repo/dir name (case-insensitive).
@@ -82,6 +87,6 @@ Start a new time tracking session in the configured backend.
      -d '{"description":"<description>","start":"<UTC time>","billable":<billable>}'
    ```
 
-8. **Report result** (keep it concise):
-   - Success: `Session started: '<description>'` — append ` — project: <name>` if a project was resolved.
-   - On HTTP error: show the API error message and suggest re-running `/setup-tracker`.
+8. **Report result** (keep it concise, phrased in the configured language):
+   - Success: an equivalent of `Session started: '<description>'` — append project name if resolved.
+   - On HTTP error: show the API error message (verbatim, not translated) and suggest re-running `/setup-tracker`.

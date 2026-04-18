@@ -29,6 +29,7 @@ Skills read/write `~/.claude/plugins/session-tracker/config.json`:
 {
   "backend": "toggl",
   "billable": true,
+  "language": "en",
   "toggl": {
     "api_key": "...",
     "workspace_id": 1234567,
@@ -37,7 +38,7 @@ Skills read/write `~/.claude/plugins/session-tracker/config.json`:
 }
 ```
 
-Top-level fields apply regardless of backend. `billable` defaults to `true` when missing.
+Top-level fields apply regardless of backend. Defaults when missing: `billable` → `true`, `language` → `"en"`. `language` influences Claude-generated text (prompts, confirmations, descriptions derived from a URL title); it is **not** sent to the tracker API.
 
 ## Skills
 

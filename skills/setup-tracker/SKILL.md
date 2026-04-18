@@ -1,7 +1,7 @@
 ---
 name: setup-tracker
 description: Configure the session-tracker plugin. Use when the user wants to set up time tracking, configure Toggl or Clockify, run initial setup, says "/setup-tracker", or when start-session fails because config is missing.
-version: 1.3.0
+version: 1.4.0
 allowed-tools: Read, Write, Bash
 ---
 
@@ -35,7 +35,9 @@ Configure session-tracker to connect to a time tracking service.
 
 5. Ask whether time entries should be marked as **billable** ([Y/n], default `yes`). Store as `billable: true` or `false` at the top level of the config.
 
-6. (Optional) Ask if the user wants a default project. If yes, fetch projects for the selected workspace and let them choose. If no, `default_project_id` will be `null`.
+6. Ask for the preferred **language code** (default `en`). Common codes: `en`, `cs`, `de`, `fr`, `es` — accept any ISO 639-1 / BCP-47 code. This language is used for Claude-generated text (prompts, confirmations, descriptions derived from a URL title). Store as `language: "<code>"` at the top level of the config.
+
+7. (Optional) Ask if the user wants a default project. If yes, fetch projects for the selected workspace and let them choose. If no, `default_project_id` will be `null`.
 
    **Toggl projects:**
    ```bash
@@ -47,7 +49,7 @@ Configure session-tracker to connect to a time tracking service.
    curl -s -H "X-Api-Key: <api_key>" "https://api.clockify.me/api/v1/workspaces/<workspace_id>/projects"
    ```
 
-7. Create the config directory and write `~/.claude/plugins/session-tracker/config.json`:
+8. Create the config directory and write `~/.claude/plugins/session-tracker/config.json`:
 
    ```bash
    mkdir -p ~/.claude/plugins/session-tracker
@@ -60,6 +62,7 @@ Configure session-tracker to connect to a time tracking service.
    {
      "backend": "toggl",
      "billable": <true or false>,
+     "language": "<code>",
      "toggl": {
        "api_key": "<api_key>",
        "workspace_id": <workspace_id>,
@@ -73,6 +76,7 @@ Configure session-tracker to connect to a time tracking service.
    {
      "backend": "clockify",
      "billable": <true or false>,
+     "language": "<code>",
      "clockify": {
        "api_key": "<api_key>",
        "workspace_id": "<workspace_id>",
@@ -81,4 +85,4 @@ Configure session-tracker to connect to a time tracking service.
    }
    ```
 
-8. Confirm: "Setup complete. Use /start to begin tracking."
+9. Confirm completion in the configured language (default English): "Setup complete. Use /start to begin tracking."
