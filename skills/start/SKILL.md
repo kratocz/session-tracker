@@ -2,7 +2,7 @@
 name: start
 description: Start a time tracking session or timer. Use when the user says "/start", "start session", "start timer", "begin tracking", "I'm starting work on...", or any similar phrase indicating they want to begin tracking time.
 argument-hint: [task-description-or-url]
-version: 1.2.0
+version: 1.3.0
 allowed-tools: Read, Bash
 ---
 
@@ -64,14 +64,14 @@ Start a new time tracking session in the configured backend.
    date -u +%Y-%m-%dT%H:%M:%SZ
    ```
 
-7. **Start timer** based on `config.backend`. Include the project ID field only if resolved in step 5; otherwise omit it entirely.
+7. **Start timer** based on `config.backend`. Include the project ID field only if resolved in step 5; otherwise omit it entirely. Read `config.billable` (top-level field) and pass it in the payload — if the field is missing from the config, default to `true`.
 
    ### Toggl Track
    ```bash
    curl -s -u "<config.toggl.api_key>:api_token" \
      -H "Content-Type: application/json" \
      -X POST "https://api.track.toggl.com/api/v9/time_entries" \
-     -d '{"description":"<description>","workspace_id":<workspace_id>,"start":"<UTC time>","duration":-1,"created_with":"session-tracker-claude-plugin"}'
+     -d '{"description":"<description>","workspace_id":<workspace_id>,"start":"<UTC time>","duration":-1,"billable":<billable>,"created_with":"session-tracker-claude-plugin"}'
    ```
 
    ### Clockify
@@ -79,7 +79,7 @@ Start a new time tracking session in the configured backend.
    curl -s -H "X-Api-Key: <config.clockify.api_key>" \
      -H "Content-Type: application/json" \
      -X POST "https://api.clockify.me/api/v1/workspaces/<workspace_id>/time-entries" \
-     -d '{"description":"<description>","start":"<UTC time>"}'
+     -d '{"description":"<description>","start":"<UTC time>","billable":<billable>}'
    ```
 
 8. **Report result** (keep it concise):

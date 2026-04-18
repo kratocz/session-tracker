@@ -28,6 +28,7 @@ Skills read/write `~/.claude/plugins/session-tracker/config.json`:
 ```json
 {
   "backend": "toggl",
+  "billable": true,
   "toggl": {
     "api_key": "...",
     "workspace_id": 1234567,
@@ -35,6 +36,8 @@ Skills read/write `~/.claude/plugins/session-tracker/config.json`:
   }
 }
 ```
+
+Top-level fields apply regardless of backend. `billable` defaults to `true` when missing.
 
 ## Skills
 

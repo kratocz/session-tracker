@@ -1,7 +1,7 @@
 ---
 name: setup-tracker
 description: Configure the session-tracker plugin. Use when the user wants to set up time tracking, configure Toggl or Clockify, run initial setup, says "/setup-tracker", or when start-session fails because config is missing.
-version: 1.2.0
+version: 1.3.0
 allowed-tools: Read, Write, Bash
 ---
 
@@ -33,7 +33,9 @@ Configure session-tracker to connect to a time tracking service.
 
 4. If multiple workspaces are returned, list them and ask the user to choose one.
 
-5. (Optional) Ask if the user wants a default project. If yes, fetch projects for the selected workspace and let them choose. If no, `default_project_id` will be `null`.
+5. Ask whether time entries should be marked as **billable** ([Y/n], default `yes`). Store as `billable: true` or `false` at the top level of the config.
+
+6. (Optional) Ask if the user wants a default project. If yes, fetch projects for the selected workspace and let them choose. If no, `default_project_id` will be `null`.
 
    **Toggl projects:**
    ```bash
@@ -45,7 +47,7 @@ Configure session-tracker to connect to a time tracking service.
    curl -s -H "X-Api-Key: <api_key>" "https://api.clockify.me/api/v1/workspaces/<workspace_id>/projects"
    ```
 
-6. Create the config directory and write `~/.claude/plugins/session-tracker/config.json`:
+7. Create the config directory and write `~/.claude/plugins/session-tracker/config.json`:
 
    ```bash
    mkdir -p ~/.claude/plugins/session-tracker
@@ -57,6 +59,7 @@ Configure session-tracker to connect to a time tracking service.
    ```json
    {
      "backend": "toggl",
+     "billable": <true or false>,
      "toggl": {
        "api_key": "<api_key>",
        "workspace_id": <workspace_id>,
@@ -69,6 +72,7 @@ Configure session-tracker to connect to a time tracking service.
    ```json
    {
      "backend": "clockify",
+     "billable": <true or false>,
      "clockify": {
        "api_key": "<api_key>",
        "workspace_id": "<workspace_id>",
@@ -77,4 +81,4 @@ Configure session-tracker to connect to a time tracking service.
    }
    ```
 
-7. Confirm: "Setup complete. Use /start to begin tracking."
+8. Confirm: "Setup complete. Use /start to begin tracking."
