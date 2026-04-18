@@ -1,7 +1,8 @@
 ---
 name: start
 description: Start a time tracking session or timer. Use when the user says "/start", "start session", "start timer", "begin tracking", "I'm starting work on...", or any similar phrase indicating they want to begin tracking time.
-version: 1.1.0
+version: 1.1.1
+allowed-tools: Read, Bash
 ---
 
 # Start Session
