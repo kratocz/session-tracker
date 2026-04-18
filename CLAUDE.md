@@ -53,3 +53,15 @@ Top-level fields apply regardless of backend. Defaults when missing: `billable` 
 1. Add a section to `config.json` (e.g. `"harvest": { ... }`)
 2. Add `backend: "harvest"` handling to each skill
 3. Bump version in `plugin.json`
+
+## Release workflow
+
+After merging to `main`, each version bump follows the same pattern:
+
+1. Bump `version` in `plugin.json` **and** in every skill's frontmatter (keep them in sync).
+2. Commit the bump (`feat:` / `fix:` / `chore:` with a body describing changes).
+3. Create an annotated tag: `git tag -a vX.Y.Z -m "Release vX.Y.Z: <summary>"`.
+4. Push both: `git push origin main && git push origin vX.Y.Z`.
+5. Create a GitHub Release from the tag with `gh release create vX.Y.Z --title "vX.Y.Z — <summary>" --notes "$(cat <<'EOF' ... EOF)"`. Release notes should summarize user-visible changes (markdown, bulleted).
+
+SemVer: patch for hardening/metadata, minor for new config fields or behavior, major for breaking changes (config schema changes that break existing configs).
