@@ -56,12 +56,16 @@ Top-level fields apply regardless of backend. Defaults when missing: `billable` 
 
 ## Release workflow
 
-After merging to `main`, each version bump follows the same pattern:
+Commit messages are the single source of truth for release content. Tags are lightweight pointers; GitHub Release notes are auto-generated from commits since the previous tag.
 
 1. Bump `version` in `plugin.json` **and** in every skill's frontmatter (keep them in sync).
-2. Commit the bump (`feat:` / `fix:` / `chore:` with a body describing changes).
-3. Create an annotated tag: `git tag -a vX.Y.Z -m "Release vX.Y.Z: <summary>"`.
-4. Push both: `git push origin main && git push origin vX.Y.Z`.
-5. Create a GitHub Release from the tag with `gh release create vX.Y.Z --title "vX.Y.Z — <summary>" --notes "$(cat <<'EOF' ... EOF)"`. Release notes should summarize user-visible changes (markdown, bulleted).
+2. Commit the bump. Use a clear `feat:` / `fix:` / `chore:` subject and a bulleted body describing user-visible changes — this body is what ends up surfaced in the release notes and in `git log`.
+3. Create a lightweight tag: `git tag vX.Y.Z` (no `-a`, no `-m` — the commit carries the message).
+4. Push: `git push origin main && git push origin vX.Y.Z`.
+5. Create the GitHub Release with auto-generated notes:
+   ```bash
+   gh release create vX.Y.Z --title "vX.Y.Z — <short summary>" --generate-notes
+   ```
+   `--generate-notes` populates the body from commits (and PRs, if any) since the previous tag. No manual copy-pasting from the commit message.
 
 SemVer: patch for hardening/metadata, minor for new config fields or behavior, major for breaking changes (config schema changes that break existing configs).
